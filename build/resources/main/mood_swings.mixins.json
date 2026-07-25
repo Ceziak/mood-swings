@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.ceziak.mood_swings.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerMoodComponentMixin"
+  ],
+  "client": [
+    "client.TaskRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

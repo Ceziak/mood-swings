@@ -1,0 +1,14 @@
+{
+  "projectPath": ":",
+  "classpaths": {
+    "test": [
+      "C:\\Users\\Ceziak\\Desktop\\ide-workspaces\\mood-swings-1.0.0\\build\\classes\\java\\test",
+      "C:\\Users\\Ceziak\\Desktop\\ide-workspaces\\mood-swings-1.0.0\\build\\resources\\test"
+    ],
+    "main": [
+      "C:\\Users\\Ceziak\\Desktop\\ide-workspaces\\mood-swings-1.0.0\\build\\classes\\java\\main",
+      "C:\\Users\\Ceziak\\Desktop\\ide-workspaces\\mood-swings-1.0.0\\build\\resources\\main",
+      "C:\\Users\\Ceziak\\Desktop\\ide-workspaces\\mood-swings-1.0.0\\build\\devlibs\\mood-swings-1.0.0-dev.jar"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "mood_swings",
+  "version": "1.0.0",
+  "name": "Mood Swings",
+  "description": "Adds configurable mood tasks and reusable named areas to Wathe while preserving its native mood HUD.",
+  "authors": [
+    "Ceziak"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.ceziak.mood_swings.MoodSwings"
+    ],
+    "modmenu": [
+      "net.ceziak.mood_swings.client.MoodSwingsModMenu"
+    ]
+  },
+  "mixins": [
+    "mood_swings.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": ">=0.116.14+1.21.1",
+    "wathe": "1.3.2-1.21.1",
+    "cloth-config": ">=15.0.140"
+  },
+  "suggests": {
+    "modmenu": ">=11.0.3"
+  }
+}

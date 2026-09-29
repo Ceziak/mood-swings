@@ -1,0 +1,10 @@
+{
+  "your_sound_event": {
+    "sounds": [
+      {
+        "name": "mood_swings:ost/your_audio_file",
+        "stream": true
+      }
+    ]
+  }
+}

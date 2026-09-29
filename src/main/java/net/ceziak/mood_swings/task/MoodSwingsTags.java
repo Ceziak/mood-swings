@@ -1,16 +1,11 @@
 package net.ceziak.mood_swings.task;
 
-import net.ceziak.mood_swings.MoodSwings;
-import net.minecraft.block.Block;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-
+/**
+ * Legacy placeholder retained for clean source-tree upgrades from 1.0.x.
+ * Block tags are now read directly from each JSON condition definition.
+ */
+@Deprecated(forRemoval = true)
 public final class MoodSwingsTags {
-    public static final TagKey<Block> SHOWER_HEADS = TagKey.of(
-            RegistryKeys.BLOCK,
-            MoodSwings.id("shower_heads")
-    );
-
     private MoodSwingsTags() {
     }
 }

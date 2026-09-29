@@ -3,10 +3,22 @@
   "package": "net.ceziak.mood_swings.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "PlayerMoodComponentMixin"
+    "GameFunctionsMixin",
+    "PlayerMoodComponentMixin",
+    "MurderGameModeMixin",
+    "PlayerShopComponentAccessor",
+    "PlayerShopComponentMixin",
+    "DoorBlockMixin",
+    "LockpickItemMixin"
   ],
   "client": [
-    "client.TaskRendererMixin"
+    "client.TaskRendererMixin",
+    "client.MoodRendererMixin",
+    "client.WatheClientMixin",
+    "client.WatheItemTooltipsInvoker",
+    "client.CameraMixin",
+    "client.ClientPlayerEntityMixin",
+    "client.InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1

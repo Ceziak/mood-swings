@@ -1,29 +1,12 @@
 package net.ceziak.mood_swings.task;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Optional;
-
-public enum CustomTaskType {
-    TAKE_A_SHOWER("take_a_shower"),
-    SOCIALIZE("socialize"),
-    GYM("gym"),
-    STRANGE_NOISE("strange_noise"),
-    WALK("walk"),
-    ROOFTOP("rooftop");
-
-    private final String id;
-
-    CustomTaskType(String id) {
-        this.id = id;
-    }
-
-    public String id() {
-        return id;
-    }
-
-    public static Optional<CustomTaskType> byId(String value) {
-        String normalized = value.trim().toLowerCase(Locale.ROOT);
-        return Arrays.stream(values()).filter(task -> task.id.equals(normalized)).findFirst();
+/**
+ * Legacy marker retained only so copying an update over a 1.0.x source tree
+ * replaces the former hard-coded task enum. JSON task identifiers are now
+ * represented by Minecraft identifiers and loaded by {@link TaskDefinitionRegistry}.
+ */
+@Deprecated(forRemoval = true)
+public final class CustomTaskType {
+    private CustomTaskType() {
     }
 }

@@ -1,0 +1,13 @@
+{
+  "civilian_text": "REMOVE THE NOISE.",
+  "killer_text": "REMOVE THE NOISE.",
+  "mood_value": 1.0,
+  "weight": 0.15,
+  "repeatable": true,
+  "audience": "killer",
+  "blocks_passive_income": true,
+  "condition": {
+    "type": "mood_swings:kill_player",
+    "required_count": 1
+  }
+}

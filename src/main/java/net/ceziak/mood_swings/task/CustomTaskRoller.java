@@ -3,6 +3,7 @@ package net.ceziak.mood_swings.task;
 import dev.doctor4t.wathe.cca.PlayerMoodComponent;
 import net.ceziak.mood_swings.config.WorldDataStore;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,42 +13,52 @@ public final class CustomTaskRoller {
     private CustomTaskRoller() {
     }
 
-    /**
-     * Returns a custom task when a unified native/custom roll lands on one.
-     * Returning null lets Wathe continue with its normal native generator.
-     */
+    /** Returns null when the unified roll lands on a native Wathe task. */
     public static CustomTrainTask tryRoll(
             ServerPlayerEntity player,
             Map<PlayerMoodComponent.Task, Integer> timesGotten
     ) {
-        List<CustomTaskType> custom = enabledAvailableCustomTasks(player);
-        int nativeCount = TaskRegistry.enabledNativeTasks().length;
-        int total = custom.size() + nativeCount;
+        List<Map.Entry<Identifier, TaskDefinition>> custom = enabledAvailableCustomTasks(player);
+        double customWeight = custom.stream().mapToDouble(entry -> entry.getValue().safeWeight()).sum();
+        double nativeWeight = TaskRegistry.enabledNativeTasks().length;
+        double totalWeight = customWeight + nativeWeight;
 
-        if (total <= 0 || custom.isEmpty()) {
+        if (totalWeight <= 0.0D || customWeight <= 0.0D) {
             return null;
         }
 
-        int roll = player.getRandom().nextInt(total);
-        if (roll >= custom.size()) {
+        double roll = player.getRandom().nextDouble() * totalWeight;
+        if (roll >= customWeight) {
             return null;
         }
 
-        CustomTaskType selected = custom.get(roll);
+        Map.Entry<Identifier, TaskDefinition> selected = null;
+        double cursor = 0.0D;
+        for (Map.Entry<Identifier, TaskDefinition> entry : custom) {
+            cursor += entry.getValue().safeWeight();
+            if (roll < cursor) {
+                selected = entry;
+                break;
+            }
+        }
+        if (selected == null) {
+            return null;
+        }
+
         PlayerMoodComponent.Task storage = CustomTrainTask.chooseStorageType(timesGotten);
-        return CustomTrainTask.create(player, selected, storage, false);
+        return CustomTrainTask.create(player, selected.getKey(), selected.getValue(), storage, false);
     }
 
-    public static List<CustomTaskType> enabledAvailableCustomTasks(ServerPlayerEntity player) {
-        List<CustomTaskType> available = new ArrayList<>();
-        for (CustomTaskType type : CustomTaskType.values()) {
-            if (!WorldDataStore.isTaskEnabled(type.id())) {
+    public static List<Map.Entry<Identifier, TaskDefinition>> enabledAvailableCustomTasks(ServerPlayerEntity player) {
+        List<Map.Entry<Identifier, TaskDefinition>> available = new ArrayList<>();
+        for (Map.Entry<Identifier, TaskDefinition> entry : TaskDefinitionRegistry.all().entrySet()) {
+            if (!WorldDataStore.isTaskEnabled(entry.getKey().toString())) {
                 continue;
             }
-            if (!CustomTaskConditions.isTaskAvailable(player, type)) {
+            if (!TaskConditionEvaluator.isTaskAvailable(player, entry.getValue())) {
                 continue;
             }
-            available.add(type);
+            available.add(entry);
         }
         return available;
     }

@@ -3,15 +3,19 @@
   "id": "mood_swings",
   "version": "${version}",
   "name": "Mood Swings",
-  "description": "Adds configurable mood tasks and reusable named areas to Wathe while preserving its native mood HUD.",
+  "description": "Expands Wathe with data-driven mood tasks, dedicated Lockdown Areas, environmental kill credit, synchronized OST regions, wind-like camera ambience and world-only darkening.",
   "authors": [
     "Ceziak"
   ],
   "license": "MIT",
+  "icon": "assets/mood_swings/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
       "net.ceziak.mood_swings.MoodSwings"
+    ],
+    "client": [
+      "net.ceziak.mood_swings.client.MoodSwingsClient"
     ],
     "modmenu": [
       "net.ceziak.mood_swings.client.MoodSwingsModMenu"

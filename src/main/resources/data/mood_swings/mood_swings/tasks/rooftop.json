@@ -1,0 +1,12 @@
+{
+  "civilian_text": "You feel like visiting the rooftop",
+  "killer_text": "You could fake visiting the rooftop",
+  "mood_value": 1.0,
+  "weight": 1,
+  "repeatable": true,
+  "condition": {
+    "type": "mood_swings:stay_in_area",
+    "area": "rooftop",
+    "duration_seconds": 10
+  }
+}

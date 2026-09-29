@@ -1,0 +1,18 @@
+{
+  "hotel.outside": {
+    "sounds": [
+      {
+        "name": "mood_swings:ost/hotel.outside",
+        "stream": true
+      }
+    ]
+  },
+  "hotel.inside": {
+    "sounds": [
+      {
+        "name": "mood_swings:ost/hotel.inside",
+        "stream": true
+      }
+    ]
+  }
+}

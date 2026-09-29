@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mood Swings task definition",
+  "description": "A data-driven mood task loaded from data/<namespace>/mood_swings/tasks/<task_id>.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "civilian_text",
+    "killer_text",
+    "condition"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "civilian_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "killer_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mood_value": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "default": 1.0
+    },
+    "weight": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 10000,
+      "default": 1.0
+    },
+    "repeatable": {
+      "const": true,
+      "default": true
+    },
+    "audience": {
+      "type": "string",
+      "enum": [
+        "all",
+        "civilian",
+        "killer"
+      ],
+      "default": "all"
+    },
+    "blocks_passive_income": {
+      "type": "boolean",
+      "default": false
+    },
+    "condition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/stayInArea"
+        },
+        {
+          "$ref": "#/$defs/randomArea"
+        },
+        {
+          "$ref": "#/$defs/travelDistance"
+        },
+        {
+          "$ref": "#/$defs/nearPlayer"
+        },
+        {
+          "$ref": "#/$defs/underBlock"
+        },
+        {
+          "$ref": "#/$defs/aboveBlock"
+        },
+        {
+          "$ref": "#/$defs/killPlayer"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "durationSeconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600,
+      "default": 10
+    },
+    "blockTag": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "requiredFacing": {
+      "type": "string",
+      "enum": [
+        "down",
+        "up",
+        "north",
+        "south",
+        "west",
+        "east"
+      ]
+    },
+    "stayInArea": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "area"
+      ],
+      "properties": {
+        "type": {
+          "const": "mood_swings:stay_in_area"
+        },
+        "area": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration_seconds": {
+          "$ref": "#/$defs/durationSeconds"
+        }
+      }
+    },
+    "randomArea": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "mood_swings:random_area"
+        },
+        "duration_seconds": {
+          "$ref": "#/$defs/durationSeconds"
+        },
+        "exclude_current": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "travelDistance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "distance_blocks"
+      ],
+      "properties": {
+        "type": {
+          "const": "mood_swings:travel_distance"
+        },
+        "distance_blocks": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000
+        },
+        "max_counted_step": {
+          "type": "number",
+          "minimum": 0.25,
+          "maximum": 128,
+          "default": 2
+        }
+      }
+    },
+    "nearPlayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "mood_swings:near_player"
+        },
+        "range": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 128,
+          "default": 3
+        },
+        "duration_seconds": {
+          "$ref": "#/$defs/durationSeconds"
+        }
+      }
+    },
+    "underBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "block_tag"
+      ],
+      "properties": {
+        "type": {
+          "const": "mood_swings:under_block"
+        },
+        "block_tag": {
+          "$ref": "#/$defs/blockTag"
+        },
+        "duration_seconds": {
+          "$ref": "#/$defs/durationSeconds"
+        },
+        "scan_height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128,
+          "default": 8
+        },
+        "require_powered": {
+          "type": "boolean",
+          "default": false
+        },
+        "required_facing": {
+          "$ref": "#/$defs/requiredFacing"
+        }
+      }
+    },
+    "aboveBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "block_tag"
+      ],
+      "properties": {
+        "type": {
+          "const": "mood_swings:above_block"
+        },
+        "block_tag": {
+          "$ref": "#/$defs/blockTag"
+        },
+        "duration_seconds": {
+          "$ref": "#/$defs/durationSeconds"
+        },
+        "scan_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128,
+          "default": 1
+        },
+        "require_powered": {
+          "type": "boolean",
+          "default": false
+        },
+        "required_facing": {
+          "$ref": "#/$defs/requiredFacing"
+        }
+      }
+    },
+    "killPlayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "mood_swings:kill_player"
+        },
+        "required_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000,
+          "default": 1
+        }
+      }
+    }
+  }
+}

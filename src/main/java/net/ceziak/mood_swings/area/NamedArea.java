@@ -2,6 +2,7 @@ package net.ceziak.mood_swings.area;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 
 public record NamedArea(
         String dimension,
@@ -13,6 +14,8 @@ public record NamedArea(
         int maxZ,
         String displayName
 ) {
+    private static final double PLAYER_EDGE_TOLERANCE = 0.05D;
+
     public static NamedArea between(String dimension, BlockPos first, BlockPos second, String displayName) {
         return new NamedArea(
                 dimension,
@@ -31,10 +34,10 @@ public record NamedArea(
             return false;
         }
 
-        BlockPos pos = player.getBlockPos();
-        return pos.getX() >= minX && pos.getX() <= maxX
-                && pos.getY() >= minY && pos.getY() <= maxY
-                && pos.getZ() >= minZ && pos.getZ() <= maxZ;
+        // Treat selected coordinates as complete block volumes rather than only integer points.
+        // A tiny expansion also prevents standing exactly on a border from flickering in/out.
+        Box areaBox = new Box(minX, minY, minZ, maxX + 1.0D, maxY + 1.0D, maxZ + 1.0D);
+        return areaBox.intersects(player.getBoundingBox().expand(PLAYER_EDGE_TOLERANCE));
     }
 
     public String cornersString() {

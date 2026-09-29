@@ -2,27 +2,42 @@ package net.ceziak.mood_swings.task;
 
 import dev.doctor4t.wathe.cca.PlayerMoodComponent;
 import net.ceziak.mood_swings.config.WorldDataStore;
+import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 public final class TaskRegistry {
     public static final List<String> NATIVE_IDS = List.of("sleep", "outside", "eat", "drink");
-    public static final List<String> CUSTOM_IDS = Arrays.stream(CustomTaskType.values())
-            .map(CustomTaskType::id)
-            .toList();
-    public static final List<String> ALL_IDS = java.util.stream.Stream.concat(
-            NATIVE_IDS.stream(),
-            CUSTOM_IDS.stream()
-    ).toList();
 
     private TaskRegistry() {
     }
 
+    public static List<String> customIds() {
+        return TaskDefinitionRegistry.ids();
+    }
+
+    public static List<String> allIds() {
+        List<String> ids = new ArrayList<>(NATIVE_IDS);
+        ids.addAll(customIds());
+        return List.copyOf(ids);
+    }
+
     public static boolean isKnown(String value) {
-        return ALL_IDS.contains(normalize(value));
+        String normalized = normalize(value);
+        return NATIVE_IDS.contains(normalized) || TaskDefinitionRegistry.resolve(normalized).isPresent();
+    }
+
+    public static String canonicalize(String value) {
+        String normalized = normalize(value);
+        if (NATIVE_IDS.contains(normalized)) {
+            return normalized;
+        }
+        return TaskDefinitionRegistry.resolve(normalized)
+                .map(entry -> entry.getKey().toString())
+                .orElse(normalized);
     }
 
     public static String nativeId(PlayerMoodComponent.Task task) {
@@ -34,15 +49,11 @@ public final class TaskRegistry {
         };
     }
 
-    public static Optional<CustomTaskType> custom(String value) {
-        return CustomTaskType.byId(value);
-    }
-
     public static String idOf(PlayerMoodComponent.TrainTask task) {
         if (task instanceof CustomTrainTask custom) {
-            return custom.customType().id();
+            return custom.taskId().toString();
         }
-        return task.getName().toLowerCase(Locale.ROOT);
+        return nativeId(task.getType());
     }
 
     public static PlayerMoodComponent.Task[] enabledNativeTasks() {
@@ -52,6 +63,6 @@ public final class TaskRegistry {
     }
 
     private static String normalize(String value) {
-        return value.trim().toLowerCase(Locale.ROOT);
+        return value == null ? "" : value.trim().toLowerCase(Locale.ROOT);
     }
 }

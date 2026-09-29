@@ -1,0 +1,12 @@
+{
+  "civilian_text": "You feel like hitting the gym",
+  "killer_text": "You could fake hitting the gym",
+  "mood_value": 1.0,
+  "weight": 1,
+  "repeatable": true,
+  "condition": {
+    "type": "mood_swings:stay_in_area",
+    "area": "gym",
+    "duration_seconds": 10
+  }
+}

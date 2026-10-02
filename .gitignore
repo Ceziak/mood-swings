@@ -1,0 +1,7 @@
+build/*
+run/
+
+.classpath
+.project
+.settings/
+bin/

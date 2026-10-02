@@ -1,7 +1,7 @@
 package net.ceziak.mood_swings.task;
 
 import dev.doctor4t.wathe.cca.PlayerMoodComponent;
-import dev.doctor4t.wathe.util.TaskCompletePayload;
+import dev.doctor4t.wathe.network.TaskCompletePayload;
 import net.ceziak.mood_swings.access.PlayerMoodComponentAccess;
 import net.ceziak.mood_swings.config.WorldDataStore;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

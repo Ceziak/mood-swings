@@ -12,6 +12,7 @@ import net.ceziak.mood_swings.area.AreaStore;
 import net.ceziak.mood_swings.area.NamedArea;
 import net.ceziak.mood_swings.config.WorldDataStore;
 import net.ceziak.mood_swings.lockdown.LockdownAreaStore;
+import net.ceziak.mood_swings.lockdown.LockdownSystem;
 import net.ceziak.mood_swings.network.AreaBorderPayload;
 import net.ceziak.mood_swings.network.ConfigSyncService;
 import net.ceziak.mood_swings.ost.OstArea;
@@ -261,6 +262,10 @@ public final class MoodSwingsCommand {
                                                         StringArgumentType.getString(context, "name")))))
                                 .then(CommandManager.literal("list")
                                         .executes(context -> listLockdownAreas(context.getSource()))))
+                        .then(CommandManager.literal("enable")
+                                .executes(context -> setLockdownEnabled(context.getSource(), true)))
+                        .then(CommandManager.literal("disable")
+                                .executes(context -> setLockdownEnabled(context.getSource(), false)))
                 )
                 .then(CommandManager.literal("reload").executes(context -> reloadEverything(context.getSource())))
         );
@@ -695,6 +700,15 @@ public final class MoodSwingsCommand {
         }
         ConfigSyncService.broadcastSnapshots(source.getServer());
         source.sendFeedback(() -> Text.literal("OST areas are now " + (enabled ? "enabled" : "disabled")
+                + " in this save."), true);
+        return changed ? 1 : 0;
+    }
+
+    private static int setLockdownEnabled(ServerCommandSource source, boolean enabled) {
+        boolean changed = WorldDataStore.setLockdownEnabled(enabled);
+        LockdownSystem.setShopEntryEnabled(enabled);
+        ConfigSyncService.broadcastSnapshots(source.getServer());
+        source.sendFeedback(() -> Text.literal("Lockdown is now " + (enabled ? "enabled" : "disabled")
                 + " in this save."), true);
         return changed ? 1 : 0;
     }

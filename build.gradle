@@ -22,6 +22,10 @@ repositories {
     maven {
         name = 'Ladysnake Mods'
         url = 'https://maven.ladysnake.org/releases'
+        content {
+            includeGroup "dev.doctor4t"
+            includeGroupByRegex "org\\.ladysnake.*"
+        }
     }
 
     maven {
@@ -33,6 +37,16 @@ repositories {
         name = 'TerraformersMC'
         url = 'https://maven.terraformersmc.com/releases/'
     }
+
+    maven {
+        name = 'Datasync'
+        url = 'https://maven.uuid.gg/releases'
+    }
+
+    maven {
+        name = 'MaxHenkel'
+        url = 'https://maven.maxhenkel.de/releases'
+    }
 }
 
 dependencies {
@@ -42,7 +56,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "maven.modrinth:XoU7Lf7D:${project.wathe_version_id}"
+    modApi "dev.doctor4t:wathe:${project.wathe_version}"
 
     // Wathe embeds Cardinal Components at runtime. These non-transitive entries
     // expose its API to the compiler without pulling duplicate Fabric modules.
